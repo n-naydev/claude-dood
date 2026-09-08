@@ -1,0 +1,15 @@
+FROM mcr.microsoft.com/playwright:latest
+
+RUN npm install -g @playwright/mcp@latest
+
+# @playwright/mcp defaults to the "chrome" channel (real Google Chrome), which
+# isn't included in the base Playwright image (only the bundled Chromium is).
+# Install it explicitly so the MCP server can launch a browser out of the box.
+RUN npx -y playwright install --with-deps chrome
+
+EXPOSE 3000
+
+COPY playwright-entrypoint.sh /playwright-entrypoint.sh
+RUN chmod +x /playwright-entrypoint.sh
+
+ENTRYPOINT ["/playwright-entrypoint.sh"]

@@ -10,3 +10,6 @@ done
 
 # Build the OpenCode CLI image
 docker build $BUILD_ARGS -t opencode-image .
+
+# Build the Playwright MCP image
+docker build $BUILD_ARGS -t opencode-playwright-image -f Dockerfile.playwright .
