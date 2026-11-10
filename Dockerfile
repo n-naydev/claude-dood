@@ -28,9 +28,8 @@ RUN install -m 0755 -d /etc/apt/keyrings \
     && apt-get install -y docker-ce-cli docker-compose-plugin \
     && rm -rf /var/lib/apt/lists/*
 
-# 3. Install OpenCode
-RUN curl -fsSL https://opencode.ai/install | bash \
-    && mv /root/.opencode/bin/opencode /usr/local/bin/opencode
+# 3. Install Claude Code
+RUN npm install -g @anthropic-ai/claude-code
 
 # 4. Setup
 WORKDIR /workspace

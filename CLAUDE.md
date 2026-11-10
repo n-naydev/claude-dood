@@ -1,6 +1,6 @@
-# OpenCode CLI Guidelines
+# Claude Code CLI Guidelines
 
-This project operates within a **Docker-out-of-Docker (DooD)** setup. The OpenCode CLI runs inside a container that has access to the host's Docker socket, allowing it to manage other Docker containers.
+This project operates within a **Docker-out-of-Docker (DooD)** setup. The Claude Code CLI runs inside a container that has access to the host's Docker socket, allowing it to manage other Docker containers.
 
 ## Project Requirements
 
@@ -13,7 +13,7 @@ Every project must include a `Dockerfile` that defines the necessary runtime env
 A `docker-compose.yaml` file must be provided. It should:
 - Mount the source code as a volume to allow for live updates and persistent storage.
 - Define the services required for building and running the application.
-- (Recommended) Attach services to the `opencode` network to allow the CLI to communicate with them directly.
+- (Recommended) Attach services to the `claude` network to allow the CLI to communicate with them directly.
 
 Example `docker-compose.yaml` snippet:
 ```yaml
@@ -24,10 +24,10 @@ services:
       - .:/app
     working_dir: /app
     networks:
-      - opencode
+      - claude
 
 networks:
-  opencode:
+  claude:
     external: true
 ```
 
@@ -35,4 +35,4 @@ networks:
 All build, test, and run commands must be executed inside a container (typically via `docker compose run` or `docker compose exec`). This ensures that the host system remains clean and dependencies are managed consistently.
 
 ---
-*Note: This file serves as a guide for the OpenCode CLI and developers working within this environment.*
+*Note: This file serves as a guide for the Claude Code CLI and developers working within this environment.*

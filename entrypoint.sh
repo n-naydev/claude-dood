@@ -11,12 +11,12 @@ echo "Initializing container for UID: $USER_ID, GID: $GROUP_ID"
 
 # Create Group if missing
 if ! getent group "$GROUP_ID" >/dev/null; then
-    groupadd -g "$GROUP_ID" opencodegroup
+    groupadd -g "$GROUP_ID" claudegroup
 fi
 
 # Create User if missing
 if ! id -u "$USER_ID" >/dev/null 2>&1; then
-    useradd -u "$USER_ID" -g "$GROUP_ID" -m -s /bin/bash opencodeuser
+    useradd -u "$USER_ID" -g "$GROUP_ID" -m -s /bin/bash claudeuser
 fi
 USERNAME=$(getent passwd "$USER_ID" | cut -d: -f1)
 
@@ -43,8 +43,8 @@ chown -R "$USERNAME:$GROUP_ID" "$HOME" || true
 # 4. EXECUTE AS USER
 # --------------------------------------------------------
 # We pass execution to the user.
-# The inner script runs opencode, captures the exit code,
-# and drops into a shell if opencode crashes.
+# The inner script runs claude, captures the exit code,
+# and drops into a shell if claude crashes.
 
 exec gosu "$USERNAME" /bin/bash -c '
     # Auto-detect Docker API version to prevent client/server mismatch errors
@@ -55,16 +55,16 @@ exec gosu "$USERNAME" /bin/bash -c '
         fi
     fi
 
-    echo "Running command: opencode $@"
+    echo "Running command: claude $@"
     
-    # Run the OpenCode tool
-    opencode "$@"
+    # Run the Claude Code tool
+    claude "$@"
     EXIT_CODE=$?
 
     # Error Handling
     if [ $EXIT_CODE -ne 0 ]; then
         echo ""
-        echo "❌ OpenCode exited with error code $EXIT_CODE"
+        echo "❌ Claude Code exited with error code $EXIT_CODE"
         echo "   Spawning a rescue shell so you can check logs/files..."
         exec /bin/bash
     fi
